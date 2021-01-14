@@ -1,0 +1,2 @@
+TOKEN = '1551141223:AAELpY5r_6UebFY029vpuogpgQ4-_x18UDg'
+NAME = 'PWS59_currency_bot'
