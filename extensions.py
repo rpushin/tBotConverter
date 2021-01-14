@@ -40,9 +40,8 @@ class Bot:
         def handle_start_help(message):
             response = "Этот бот перевеодит одну валюту в другую\n" \
                        "Набери /values чтобы узнать какие валюты поддерживаются\n" \
-                       "Или введи '100 (валюта откуда) = (валюта куда)', чтобы конвертировать," \
-                       " например:\n" \
-                       "1000 USD = EUR"
+                       "Или введи '(валюта откуда) (валюта куда) 100', чтобы конвертировать, например:\n" \
+                       "USD EUR 1000"
             self.bot.send_message(message.chat.id, response)
 
         @self.bot.message_handler(commands=['values'])
@@ -58,17 +57,17 @@ class Bot:
             m = message.text.split(' ')
             if not m:
                 self.bot.reply_to(message, "Введи /help чтобы узнать какие команды я понимаю\n")
-            elif len(m) != 4:
-                self.bot.reply_to(message, "Нужно вводить по формату '1000 USD = RUB' не забывая пробелы\n"
+            elif len(m) != 3:
+                self.bot.reply_to(message, "Нужно вводить по формату 'USD RUB 1000' не забывая пробелы\n"
                                            "Введи /help чтобы узнать какие команды я понимаю\n")
             else:
                 try:
-                    api_response = RatesApi.get_rates(m[1], m[3], m[0])
+                    api_response = RatesApi.get_rates(m[0], m[1], m[2])
                 except APIException as e:
                     self.bot.reply_to(message, str(e) )
                     return
                 self.bot.reply_to(message, f'Актуальный курс: {api_response[1]}\n'
-                                           f'{m[0]} {m[1]} = {api_response[0]} {m[3]}' )
+                                           f'{m[2]} {m[0]} = {api_response[0]} {m[1]}' )
 
     def poll(self):
         self.bot.polling(none_stop=True)
