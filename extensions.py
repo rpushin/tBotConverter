@@ -71,4 +71,3 @@ class Bot:
 
     def poll(self):
         self.bot.polling(none_stop=True)
-        self.bot.polling(none_stop=True)
